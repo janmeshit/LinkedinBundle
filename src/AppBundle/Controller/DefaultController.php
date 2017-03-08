@@ -14,8 +14,14 @@ class DefaultController extends Controller
     public function indexAction(Request $request)
     {
         // replace this example code with whatever you need
+        $importer = $this->get('ccc_linkedin_importer.importer');
+        $importer->setRedirect("http://yahooo.com");
+        $importer->requestPermission();
+        dump($importer);
+        die('foo');
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
         ]);
     }
+
 }
