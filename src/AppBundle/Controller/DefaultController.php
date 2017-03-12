@@ -3,25 +3,45 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * Authenticate against LinkedIn telling it where to call back to.
+     *
+     * @Route("/authenticate", name="authenticate")
      */
-    public function indexAction(Request $request)
+    public function authenticateAction()
     {
-        // replace this example code with whatever you need
         $importer = $this->get('ccc_linkedin_importer.importer');
-        $importer->setRedirect("http://yahooo.com");
-        $importer->requestPermission();
-        dump($importer);
-        die('foo');
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ]);
+        $profileToRetrieve = 'https://www.linkedin.com/in/janmeshit/';
+        $callbackUrl = $this->generateUrl('callback', ['url' => $profileToRetrieve], UrlGeneratorInterface::ABSOLUTE_URL);
+        $importer->setRedirect($callbackUrl);
+        return $importer->requestPermission('basic');
     }
 
+    /**
+     * Receive callback from LinkedIn and display the results.
+     *
+     * @Route("/callback", name="callback")
+     */
+    public function callbackAction(Request $request)
+    {
+        $importer = $this->get('ccc_linkedin_importer.importer');
+
+        $authenticationCode = $request->get('code');
+        $importer->setCode($authenticationCode);
+
+        $profileToRetrieve = $request->get('url');
+        $importer->setPublicProfileUrl($profileToRetrieve);
+
+        $accessToken = $importer->requestAccessToken();
+        $profileData = $importer->requestUserData('public', $accessToken);
+
+        dump($profileData);
+        exit;
+    }
 }
