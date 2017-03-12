@@ -70,10 +70,10 @@ swiftmailer:
     spool:     { type: memory }
 
 ccc_linkedin_importer:
-    company: Company Name
-    app_name: Application Name
-    api_key: 77eg29ee7peyen
-    secret_key: rMpxHUYRzECb7Pl2
-    oauth_user_token: 69d8cd9b-16ef-4ee2-9673-976ae91800d0
-    oauth_user_secret: 10ab4c16-85af-484b-97ec-ee28dfef5c76
-    
+    company: Tamago-DB K.K.
+    app_name: Tamago-DB
+    api_key: "%linkedin_api_key%"
+    secret_key: "%linkedin_secret_key%"
+    oauth_user_token: "%linkedin_oauth_user_token%"
+    oauth_user_secret: "%linkedin_oauth_user_secret%"
+
