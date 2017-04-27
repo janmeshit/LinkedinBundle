@@ -85,5 +85,6 @@ $profile_data = $importer->requestUserData('private', $access_token);
 Public profile data
 ``` php
 $profile_url = 'http://linkedin.com/someones-profile';
-$profile_data = $importer->setPublicProfileUrl($profile_url)->requestUserData('public', $access_token);
+$profileData = $importer->requestUserData('public', $accessToken);
+
 ```
